@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduKonekPH - Online Portfolio</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+    header {
+      background-color: #333;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 3; /* Ensure header is above sidebar contents */
+    }
+    h1 {
+      margin: 0;
+      font-size: 36px;
+    }
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 200px;
+      background-color: #f4f4f4;
+      border-right: 1px solid #ccc;
+      overflow: hidden;
+      transition: width 0.3s; /* Add transition for width */
+      margin-top: 150px; /* Adjusted to create space for header */
+      z-index: 2; /* Ensure sidebar is above main content */
+    }
+    .sidebar:hover {
+      width: 250px;
+    }
+    .sidebar-content {
+      padding: 20px;
+      transition: transform 0.3s; /* Add transition for transform */
+    }
+    .sidebar-content p {
+      margin-top: 0;
+      transition: transform 0.3s; /* Add transition for transform */
+    }
+    .sidebar-content p:hover {
+      transform: scale(1.1); /* Zoom effect on hover */
+    }
+    footer {
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      padding: 10px;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      z-index: 3; /* Ensure footer is above sidebar contents */
+    }
+    .main-content {
+      margin-left: 220px; /* Adjusted to create space for sidebar */
+      margin-top: 150px; /* Adjusted for header height */
+      padding: 80px;
+    }
+    .main-content h2 {
+      margin-bottom: 20px; /* Add some space below the heading */
+    }
+    .main-content p {
+      line-height: 1.6; /* Adjust line height for better readability */
+      text-align: justify; /* Justify text for better alignment */
+    }
+    /* Make the image responsive */
+    .main-content img {
+      max-width: 100%;
+      height: auto;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>EduKonekPH</h1>
+    <h2>Online Portfolio</h2>
+  </header>
+  
+  <div class="sidebar">
+    <div class="sidebar-content">
+      <p style="transition-delay: 0.1s;"><a href="index.html">Home</a></p>
+      <p style="transition-delay: 0.1s;"><a href="rationale.html">Rationale</a></p>
+      <p style="transition-delay: 0.2s;"><a href="objectives.html">Objectives</a></p>
+      <p style="transition-delay: 0.3s;"><a href="dbarchitecture.html">Database Architecture</a></p>
+      <p style="transition-delay: 0.4s;"><a href="erd.html">Entity Relationship Diagram</a></p>
+      <p style="transition-delay: 0.4s;"><a href="class.html">Class Diagram</a></p>
+      <p style="transition-delay: 0.5s;"><a href="sql.html">Query SQL</a></p>
+      <p style="transition-delay: 0.6s;"><a href="link.html">DB-Fiddle / SQL Fiddle link</a></p>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <h2>Entity Relationship Diagram</h2>
+    <a href="diagrams/erd.png" target="_blank">
+      <img src="diagrams/erd.png" alt="ERD Diagram">
+    </a>
+  </div>
+  
+  <footer>
+    <p>Publish Date: May 30, 2024. All rights reserved &copy;2024</p>
+  </footer>
+</body>
+</html>

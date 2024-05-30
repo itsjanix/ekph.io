@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduKonekPH - Online Portfolio</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+    header {
+      background-color: #333;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 3; /* Ensure header is above sidebar contents */
+    }
+    h1 {
+      margin: 0;
+      font-size: 36px;
+    }
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 200px;
+      background-color: #f4f4f4;
+      border-right: 1px solid #ccc;
+      overflow: hidden;
+      transition: width 0.3s; /* Add transition for width */
+      margin-top: 150px; /* Adjusted to create space for header */
+      z-index: 2; /* Ensure sidebar is above main content */
+    }
+    .sidebar:hover {
+      width: 250px;
+    }
+    .sidebar-content {
+      padding: 20px;
+      transition: transform 0.3s; /* Add transition for transform */
+    }
+    .sidebar-content p {
+      margin-top: 0;
+      transition: transform 0.3s; /* Add transition for transform */
+    }
+    .sidebar-content p:hover {
+      transform: scale(1.1); /* Zoom effect on hover */
+    }
+    .team {
+      font-weight: bold;
+      text-align: center;
+    }
+    footer {
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      padding: 10px;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      z-index: 3; /* Ensure footer is above sidebar contents */
+    }
+    .main-content {
+      padding-top: 180px; /* Adjusted for header height */
+      margin-left: 220px; /* Adjusted to create space for sidebar */
+      margin-bottom: 60px; /* Added bottom margin */
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .team-member {
+      text-align: center;
+      margin-right: 20px;
+      margin-bottom: 20px;
+    }
+    .team-member img {
+      width: 180px;
+      height: 180px;
+      object-fit: cover; /* Crop the image to fit the dimensions */
+      margin-bottom: 10px; /* Add some space between images */
+      filter: grayscale(100%); /* Apply monochrome effect */
+      transition: filter 0.3s, transform 0.3s; /* Add transition effect */
+    }
+    .team-member img:hover {
+      filter: grayscale(0%); /* Revert to original color on hover */
+      transform: scale(1.1); /* Zoom effect on hover */
+    }
+    .team-title {
+      width: 100%;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>EduKonekPH</h1>
+    <h2>Online Portfolio</h2>
+  </header>
+  
+  <div class="sidebar">
+    <div class="sidebar-content">
+      <p style="transition-delay: 0.1s;"><a href="index.html">Home</a></p>
+      <p style="transition-delay: 0.1s;"><a href="rationale.html">Rationale</a></p>
+      <p style="transition-delay: 0.2s;"><a href="objectives.html">Objectives</a></p>
+      <p style="transition-delay: 0.3s;"><a href="dbarchitecture.html">Database Architecture</a></p>
+      <p style="transition-delay: 0.4s;"><a href="erd.html">Entity Relationship Diagram</a></p>
+      <p style="transition-delay: 0.4s;"><a href="class.html">Class Diagram</a></p>
+      <p style="transition-delay: 0.5s;"><a href="sql.html">Query SQL</a></p>
+      <p style="transition-delay: 0.6s;"><a href="link.html">DB-Fiddle / SQL Fiddle link</a></p>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <div class="team-title">
+      <h2 class="team">Meet the <strong>team.</strong></h2>
+    </div>
+
+    <div class="team-member">
+        <img src="members/shyra.jpg" alt="Shaira">
+        <p>MEDIANERO, <br><strong>Shaira</strong><br>Documentation</p>
+      </div>
+      <div class="team-member">
+        <img src="members/rojan.jpg" alt="Rojann">
+        <p>DELCARMEN, <br><strong>Rojann Francis</strong><br>Programmer</p>
+    </div>
+    <div class="team-member">
+        <img src="members/janica.jpg" alt="Janica">
+        <p>DEJESUS, <br><strong>Angel Janica Marie</strong><br>Project Manager</p>
+    </div>
+    <div class="team-member">
+        <img src="members/lexter.jpg" alt="Lexter">
+        <p>SICABALO, <br><strong>Mark Lexter</strong><br>Analyst</p>
+    </div>
+    <div class="team-member">
+        <img src="members/irish.jpg" alt="Irish">
+        <p>GUMBAN, <br><strong>Irish</strong><br>Documentation</p>
+    </div>
+    
+    </div>
+    
+    <footer>
+        <p>Publish Date: May 30, 2024. All rights reserved &copy;2024</p>
+    </footer>
+    </body>
+    </html>

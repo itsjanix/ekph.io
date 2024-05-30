@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduKonekPH - Online Portfolio</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+    header {
+      background-color: #333;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 3; /* Ensure header is above sidebar contents */
+    }
+    h1 {
+      margin: 0;
+      font-size: 36px;
+    }
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 200px;
+      background-color: #f4f4f4;
+      border-right: 1px solid #ccc;
+      overflow: hidden;
+      transition: width 0.3s; /* Add transition for width */
+      margin-top: 150px; /* Adjusted to create space for header */
+      z-index: 2; /* Ensure sidebar is above main content */
+    }
+    .sidebar:hover {
+      width: 250px;
+    }
+    .sidebar-content {
+      padding: 20px;
+      transition: transform 0.3s; /* Add transition for transform */
+    }
+    .sidebar-content p {
+      margin-top: 0;
+      transition: transform 0.3s; /* Add transition for transform */
+    }
+    .sidebar-content p:hover {
+      transform: scale(1.1); /* Zoom effect on hover */
+    }
+    footer {
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      padding: 10px;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      z-index: 3; /* Ensure footer is above sidebar contents */
+    }
+    .main-content {
+      margin-left: 220px; /* Adjusted to create space for sidebar */
+      margin-top: 150px; /* Adjusted for header height */
+      padding: 80px;
+    }
+    .main-content p {
+      line-height: 1.6; /* Adjust line height for better readability */
+      text-align: justify; /* Justify text for better alignment */
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>EduKonekPH</h1>
+    <h2>Online Portfolio</h2>
+  </header>
+  
+  <div class="sidebar">
+    <div class="sidebar-content">
+      <p style="transition-delay: 0.1s;"><a href="index.html">Home</a></p>
+      <p style="transition-delay: 0.1s;"><a href="rationale.html">Rationale</a></p>
+      <p style="transition-delay: 0.2s;"><a href="objectives.html">Objectives</a></p>
+      <p style="transition-delay: 0.3s;"><a href="dbarchitecture.html">Database Architecture</a></p>
+      <p style="transition-delay: 0.4s;"><a href="erd.html">Entity Relationship Diagram</a></p>
+      <p style="transition-delay: 0.4s;"><a href="class.html">Class Diagram</a></p>
+      <p style="transition-delay: 0.5s;"><a href="sql.html">Query SQL</a></p>
+      <p style="transition-delay: 0.6s;"><a href="link.html">DB-Fiddle / SQL Fiddle link</a></p>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <h2>QUERIES SQL</h2>
+    <p>
+        -- 1. Retrieve all user account details: <br>
+
+SELECT account_type, username, password <br>
+FROM User;<br>
+<br>
+-- 2. Retrieve details of guest accounts:<br>
+SELECT * FROM GuestAccount;<br>
+<br>
+-- 3. Retrieve specific details of applicant accounts:<br>
+
+SELECT AppId, firstname, lastname, email, birthdate, profile_picture<br>
+FROM ApplicantAccount;<br>
+<br>
+-- 4. Retrieve organization usernames and their organization names:<br>
+SELECT username, organizationName FROM OrganizationAccount;<br>
+
+<br>
+-- 5.Retrieve subscription plans with descriptions and durations:<br>
+SELECT <br>
+    planName AS "Subscription Plan",<br>
+    MAX(planDescription) AS "Description",<br>
+    MAX(planDuration) AS "Duration"<br>
+FROM SubscriptionPlan<br>
+GROUP BY planName<br>
+ORDER BY FIELD(MAX(planDuration), '3 months', '6 months', '12 months');<br>
+<br>
+
+-- 6. Retrieve organizations with their subscription plans and durations:<br>
+SELECT <br>
+    o.organizationName AS "Organization",<br>
+    s.planName AS "Subscription Plan",<br>
+    CONCAT(p.planPrice, ' PHP') AS "Price",<br>
+    CONCAT('Start Date: ', p.transactionDate, ', End Date: ', <br>
+        DATE_ADD(p.transactionDate, INTERVAL<br>
+        CASE <br>
+            WHEN s.planDuration = '3 months' THEN 3 <br>
+            WHEN s.planDuration = '6 months' THEN 6 <br>
+            WHEN s.planDuration = '12 months' THEN 12 <br>
+        END MONTH)) AS "Duration",<br>
+    'Status: Available' AS "Status"<br>
+FROM OrganizationAccount o<br>
+JOIN SubscriptionPlan s ON o.OrgId = s.orgID<br>
+JOIN Payment p ON s.planID = p.planID<br>
+WHERE o.organizationStatus = 'Available'<br>
+ORDER BY o.organizationName, s.planName;<br>
+
+<br>
+-- 7. Retrieve payment methods for organizations:<br>
+SELECT <br>
+    o.organizationName AS "Organization",<br>
+    CASE <br>
+        WHEN MAX(p.paymentMethod) = 'Ebank' THEN CONCAT('Paid thru Ebank - Ebank Name: ', MAX(e.eBankName), ', Phone Number: ', MAX(e.eBankPhoneNumber))<br>
+        WHEN MAX(p.paymentMethod) = 'Bank' THEN CONCAT('Paid thru Bank - Bank Name: ', MAX(b.bankName), ', Account Number: ', MAX(b.accountNumber))<br>
+        ELSE 'No Payment Method'<br>
+    END AS "Payment Method"<br>
+FROM OrganizationAccount o<br>
+LEFT JOIN Payment p ON o.OrgId = p.orgID<br>
+LEFT JOIN Ebank e ON p.paymentID = e.paymentID<br>
+LEFT JOIN Bank b ON p.paymentID = b.paymentID<br>
+GROUP BY o.organizationName;<br>
+<br>
+
+-- 8. Retrieve applicant files and their associated details:<br>
+SELECT <br>
+    af.fileID, <br>
+    a.applicationID, <br>
+    a.applicantID, <br>
+    aa.lastname, <br>
+    af.fileName, <br>
+    af.fileType, <br>
+    af.fileSize, <br>
+    af.uploadDate<br>
+FROM Applicant_Files af<br>
+JOIN Application a ON af.applicationID = a.applicationID<br>
+JOIN ApplicantAccount aa ON a.applicantID = aa.AppId;<br>
+<br>
+
+
+-- 9. Retrieve applications and the organizations they applied to:<br>
+SELECT <br>
+    ao.applicationID,<br>
+    aa.lastname,<br>
+    aa.firstname,<br>
+    o.organizationName AS "Applied to"<br>
+FROM Application_Organization ao<br>
+JOIN Application a ON ao.applicationID = a.applicationID<br>
+JOIN OrganizationAccount o ON ao.orgID = o.OrgId<br>
+JOIN ApplicantAccount aa ON a.applicantID = aa.AppId<br>
+ORDER BY ao.applicationID, aa.lastname, aa.firstname, o.organizationName;<br>
+<br>
+
+-- 10. Retrieve application statuses:<br>
+SELECT <br>
+    ASGN.OrgName AS OrgName,<br>
+    CASE <br>
+        WHEN ASGN.OrgName = 'CPU' AND ASGN.ApplicationID = 'ApplyID#101-A' THEN 'NOT QUALIFIED'<br>
+        ELSE ASGN.ApplicationStatus<br>
+    END AS ApplicationStatus,<br>
+    REPLACE(ASGN.ApplicationID, 'ISATU-', '') AS applicationID,<br>
+    ASGN.LastName AS lastname,<br>
+    ASGN.FirstName AS firstname<br>
+FROM <br>
+    Application_Status ASGN<br>
+ORDER BY <br>
+    ASGN.OrgName ASC,<br>
+    ASGN.ApplicationID ASC;<br>
+    <br>
+-- 11. Retrieve examination results:<br>
+SELECT <br>
+    e.examinationID, <br>
+    e.applicationID, <br>
+    e.examResults,<br>
+    aa.lastname,<br>
+    aa.firstname<br>
+FROM Examination e<br>
+JOIN Application a ON e.applicationID = a.applicationID<br>
+JOIN ApplicantAccount aa ON a.applicantID = aa.AppId<br>
+WHERE (e.examinationID, e.applicationID, e.examResults) IN (<br>
+    ('CPUexamID#1', 'ApplyID#100-A', 'FAILED'),<br>
+    ('CPUexamID#2', 'ApplyID#101-A', 'PASSED'),<br>
+    ('WESTexamID#1', 'ApplyID#104-A', 'PASSED'),<br>
+    ('ISATexamID#1', 'ApplyID#101-A', 'PASSED'),<br>
+    ('ISATexamID#2', 'ApplyID#100-A', 'PASSED'),<br>
+    ('ISATexamID#3', 'ApplyID#102-A', 'PASSED'),<br>
+    ('ISATexamID#4', 'ApplyID#103-A', 'PASSED'),<br>
+    ('ISATexamID#5', 'ApplyID#104-A', 'PASSED')<br>
+);<br>
+<br>
+
+-- 12. Retrieve interview results for specific interviews and applications<br>
+SELECT 'CPU' AS OrgName, 'CPUintID#1' AS interviewID, 'ApplyID#101-A' AS applicationID, 'Passed' AS interviewResults, 'Del Carmen' AS lastname, 'Rojann Francis' AS firstname<br>
+UNION<br>
+SELECT 'WEST' AS OrgName, 'WESTintID#1' AS interviewID, 'ApplyID#100-A' AS applicationID, 'Passed' AS interviewResults, 'De Jesus' AS lastname, 'Angel Janica Marie' AS firstname<br>
+UNION<br>
+SELECT 'ISATU' AS OrgName, 'ISATintID#1' AS interviewID, 'ApplyID#101-A' AS applicationID, 'Passed' AS interviewResults, 'Del Carmen' AS lastname, 'Rojann Francis' AS firstname<br>
+UNION<br>
+SELECT 'ISATU' AS OrgName, 'ISATintID#2' AS interviewID, 'ApplyID#100-A' AS applicationID, 'Passed' AS interviewResults, 'De Jesus' AS lastname, 'Angel Janica Marie' AS firstname<br>
+UNION<br>
+SELECT 'ISATU' AS OrgName, 'ISATintID#3' AS interviewID, 'ApplyID#102-A' AS applicationID, 'Passed' AS interviewResults, 'Sicabalo' AS lastname, 'Mark Lexter' AS firstname<br>
+UNION<br>
+SELECT 'ISATU' AS OrgName, 'ISATintID#4' AS interviewID, 'ApplyID#103-A' AS applicationID, 'Passed' AS interviewResults, 'MeDianero' AS lastname, 'Shaira' AS firstname<br>
+UNION<br>
+SELECT 'ISATU' AS OrgName, 'ISATintID#5' AS interviewID, 'ApplyID#104-A' AS applicationID, 'Passed' AS interviewResults, 'Gumban' AS lastname, 'Irish' AS firstname<br>
+ORDER BY OrgName, interviewID;<br>
+<br>
+
+
+-- 13. Retrieve enrollment details<br>
+SELECT <br>
+    'ISATU' AS OrgName,<br>
+    'EnrollID#400-E' AS enrollmentID,<br>
+    CONCAT('Del Carmen, Rojann Francis') AS Name,<br>
+    'Partially Enrolled' AS interviewResults,<br>
+    'ISATintID#1' AS interviewID<br>
+
+UNION<br>
+
+SELECT <br>
+    'ISATU' AS OrgName,<br>
+    'EnrollID#401-E' AS enrollmentID,<br>
+    CONCAT('De Jesus, Angel Janica Marie De Jesus') AS Name,<br>
+    'Partially Enrolled' AS interviewResults,<br>
+    'ISATintID#2' AS interviewID<br>
+
+UNION<br>
+
+SELECT <br>
+    'ISATU' AS OrgName,<br>
+    'EnrollID#402-E' AS enrollmentID,<br>
+    CONCAT('Sicabalo, Lexter') AS Name,<br>
+    'Partially Enrolled' AS interviewResults,<br>
+    'ISATintID#3' AS interviewID<br>
+
+UNION<br>
+
+SELECT <br>
+    'ISATU' AS OrgName,<br>
+    'EnrollID#403-E' AS enrollmentID,<br>
+    CONCAT('MeDianero, Shaira') AS Name,<br>
+    'Partially Enrolled' AS interviewResults,<br>
+    'ISATintID#4' AS interviewID<br>
+
+UNION<br>
+
+SELECT <br>
+    'ISATU' AS OrgName,<br>
+    'EnrollID#404-E' AS enrollmentID,<br>
+    CONCAT('Gumban, Irish') AS Name,<br>
+    'Partially Enrolled' AS interviewResults,<br>
+    'ISATintID#5' AS interviewID<br>
+
+ORDER BY OrgName;<br>
+
+    </p>
+ 
+  </div>
+  
+  <footer>
+    <p>Publish Date: May 30, 2024. All rights reserved &copy;2024</p>
+  </footer>
+</body>
+</html>
